@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+<TITLE>ZTREE DEMO - beforeClick / onClick</TITLE>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../resources/css/demo.css" type="text/css">
+<link rel="stylesheet" href="../resources/css/zTreeStyle/zTreeStyle.css"
+	type="text/css">
+<script type="text/javascript" src="../resources/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../resources/js/jquery.ztree.all-3.5.js"></script>
+<title>四字命令</title>
+<SCRIPT type="text/javascript">
+var setting = {
+		data: {
+			key: {
+				title:"t"
+			},
+			simpleData: {
+				enable: true
+			}
+		},
+		callback: {
+			onClick: onClick
+		}
+	};
+
+	var zNodes =[
+		{ id:1, pId:0, name:"conf", t:"我很普通，随便点我吧", open:true},
+		{ id:2, pId:0, name:"cons", t:"点我可以，但是不能点我的子节点，有本事点一个你试试看？", open:true},
+		{ id:3, pId:0, name:"dump", t:"别点我，我好害怕...我的子节点随便点吧...", open:true, click:false },
+		{ id:3, pId:0, name:"envi", t:"别点我，我好害怕...我的子节点随便点吧...", open:true, click:false },
+		{ id:3, pId:0, name:"reqs", t:"别点我，我好害怕...我的子节点随便点吧...", open:true, click:false },
+		{ id:3, pId:0, name:"ruok", t:"别点我，我好害怕...我的子节点随便点吧...", open:true, click:false }
+	];
+
+	var log, className = "dark";
+	
+	function onClick(event, treeId, treeNode, clickFlag) {
+		showLog("[ "+getTime()+" onClick ]&nbsp;&nbsp;clickFlag = " + clickFlag + " (" + (clickFlag===1 ? "普通选中": (clickFlag===0 ? "<b>取消选中</b>" : "<b>追加选中</b>")) + ")");
+	}		
+	function showLog(str) {
+		if (!log) log = $("#log");
+		log.append("<li class='"+className+"'>"+str+"</li>");
+		if(log.children("li").length > 8) {
+			log.get(0).removeChild(log.children("li")[0]);
+		}
+	}
+	function getTime() {
+		var now= new Date(),
+		h=now.getHours(),
+		m=now.getMinutes(),
+		s=now.getSeconds();
+		return (h+":"+m+":"+s);
+	}
+
+	$(document).ready(function(){
+		$.fn.zTree.init($("#tree"), setting, zNodes);
+	});
+</SCRIPT>
+</HEAD>
+
+<BODY style="height: 100%; margin: 10px 30px 30px 50px;">
+	<div class="content_wrap">
+		<div class="ztreeBackground left">
+			<li>命令列表</li>
+			<ul style="width: 300px; height: 500px;" id="tree" class="ztree"></ul>
+		</div>
+		<div class="left" style="margin-left: 70px;">
+			<ul class="list">
+				<li>执行结果</li>
+				<ul style="width: 600px; height: 500px;" id="log" class="ztree"></ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+</BODY>
+</HTML>

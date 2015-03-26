@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+<TITLE>ZTREE DEMO - beforeClick / onClick</TITLE>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../resources/css/demo.css" type="text/css">
+<link rel="stylesheet" href="../resources/css/zTreeStyle/zTreeStyle.css"
+	type="text/css">
+<script type="text/javascript" src="../resources/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../resources/js/jquery.ztree.all-3.5.js"></script>
+<title>查看节点</title>
+<SCRIPT type="text/javascript">
+	var setting = {
+		view : {
+			dblClickExpand : false,
+			showLine : true,
+			selectedMulti : false,
+			showIcon : false
+		},
+		data : {
+			simpleData : {
+				enable : true,
+				idKey : "id",
+				pIdKey : "pId",
+				rootPId : ""
+			}
+		},
+		callback : {
+			onClick : onClick
+		}
+	};
+
+	var zNodes = [ {
+		id : 1,
+		pId : 0,
+		name : "/ZooKeeper",
+		hasClick : false,
+		open : true,
+		isParent : false
+	} ];
+
+	var log, className = "dark";
+	var currentNode;
+	function onClick(event, treeId, treeNode, clickFlag) {
+		currentNode = treeNode;
+		getChildren(treeNode);
+	}
+	function showLog(str) {
+		log = $("#log");
+		log.append("<li>" + str + "</li>");
+	}
+
+	function showNode(currentNode, value, len, stat) {
+		$("#log").children("li").remove();
+		showLog("----" + getTime() + "----");
+		showLog("data= " + value);
+		showLog(stat);
+	}
+
+	function getTime() {
+		var now = new Date(), h = now.getHours(), m = now.getMinutes(), s = now
+				.getSeconds();
+		return (h + ":" + m + ":" + s);
+	}
+
+	function getChildren(treeNode) {
+		$.ajax({
+			url : '/getChildren',// 跳转到 action    
+			data : {
+				pid : treeNode.id,
+				ppath : treeNode.name
+			},
+			type : 'post',
+			cache : false,
+			dataType : 'json',
+			success : function(data) {
+				var zTree = $.fn.zTree.getZTreeObj("tree");
+				if (treeNode.hasClick) {
+				} else {
+					treeNode.hasClick = true;
+					if (data.childs.length > 0) {
+						treeNode.isParent = true;
+						zTree.addNodes(treeNode, data.childs);
+					}
+				}
+				showNode(treeNode, data.data, data.childs.length, data.stat);
+			},
+			error : function() {
+				alert("异常！");
+			}
+		});
+	}
+
+	function modify() {
+		$.ajax({
+			url : '/modifyNodeData',// 跳转到 action    
+			data : {
+				id : currentNode.id,
+				path : currentNode.name,
+				value : $("#modify").val()
+			},
+			type : 'post',
+			cache : false,
+			dataType : 'json',
+			success : function(data) {
+				showLog("[" + getTime() + "]&nbsp;data= " + data.data
+						+ "&nbsp;children=" + data.childs.length);
+				showLog("stat= " + data.stat);
+			},
+			error : function() {
+				alert("异常！");
+			}
+		});
+	}
+
+	$(document).ready(function() {
+		$.fn.zTree.init($("#tree"), setting, zNodes);
+		$("#doModify").bind('click', modify);
+	});
+</SCRIPT>
+</HEAD>
+
+<BODY style="height: 100%; margin: 10px 30px 30px 50px;">
+	<div class="content_wrap">
+		<div class="ztreeBackground left list">
+			<li>节点列表</li>
+			<ul style="width: 300px; height: 450px;" id="tree" class="ztree"></ul>
+		</div>
+		<div class="left" style="margin-left: 70px;">
+			<ul class="list">
+				<li>内容</li>
+				<ul style="width: 400px; height: 280px;" id="log" class="ztree"></ul>
+				</li>
+			</ul>
+		</div>
+		<div class="left" style="margin-left: 70px; margin-top: 30px;">
+			<ul class="list">
+				<li>修改节点内容</li>
+				<input style="width: 300px;" id="modify" type="text" />
+				<input id="doModify" type="submit" value="&nbsp;修改&nbsp;" />
+			</ul>
+		</div>
+	</div>
+</BODY>
+</HTML>
