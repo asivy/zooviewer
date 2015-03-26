@@ -138,7 +138,7 @@
 				<configuration>
 					<stopPort>9966</stopPort>
 					<stopKey>foo</stopKey>
-					<scanIntervalSeconds>0</scanIntervalSeconds>
+					<scanIntervalSeconds>5</scanIntervalSeconds>
 					<connectors>
 						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
 							<host>localhost</host>

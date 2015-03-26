@@ -33,14 +33,7 @@
 		}
 	};
 
-	var zNodes = [ {
-		id : 1,
-		pId : 0,
-		name : "/ZooKeeper",
-		hasClick : false,
-		open : true,
-		isParent : false
-	} ];
+	var zNodes = [];
 
 	var log, className = "dark";
 	var currentNode;
@@ -116,9 +109,33 @@
 		});
 	}
 
+	function search() {
+		$.ajax({
+			url : '/search',// 跳转到 action    
+			data : {
+				path : $("#searchCon").val()
+			},
+			type : 'post',
+			cache : false,
+			dataType : 'json',
+			success : function(data) {
+				console.log(data);
+				if(1==data.succ){
+					$.fn.zTree.init($("#tree"), setting, data.obj);
+					currentNode = data.obj;
+				}
+				showNode(currentNode, data.data, 0, data.stat);
+			},
+			error : function() {
+				alert("异常！");
+			}
+		});
+	}
+
 	$(document).ready(function() {
 		$.fn.zTree.init($("#tree"), setting, zNodes);
 		$("#doModify").bind('click', modify);
+		$("#search").bind('click', search);
 	});
 </SCRIPT>
 </HEAD>
@@ -126,7 +143,10 @@
 <BODY style="height: 100%; margin: 10px 30px 30px 50px;">
 	<div class="content_wrap">
 		<div class="ztreeBackground left list">
-			<li class="li_title">节点列表</li>
+			<span> <input style="width: 190px;" id="searchCon" type="text"
+				value="/" /> <input id="search" type="submit"
+				value="&nbsp;查找&nbsp;" />
+			</span>
 			<ul style="width: 300px; height: 450px;" id="tree" class="ztree"></ul>
 		</div>
 		<div class="left" style="margin-left: 70px;">
