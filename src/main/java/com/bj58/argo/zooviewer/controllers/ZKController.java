@@ -34,8 +34,7 @@ public class ZKController extends AbstractController {
             obj.element("name", path);
             obj.element("hasClick", false);
             obj.element("isParent", false);
-            
-            //
+
             json.element("data", bs == null || bs.length < 1 ? "NA" : new String(bs));
             json.element("obj", obj);
             json.element("stat", toStat(stat));

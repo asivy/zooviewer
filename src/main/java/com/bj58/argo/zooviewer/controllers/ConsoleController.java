@@ -1,14 +1,12 @@
 package com.bj58.argo.zooviewer.controllers;
 
-import java.text.SimpleDateFormat;
-
 import com.bj58.argo.ActionResult;
 import com.bj58.argo.annotations.Path;
 import com.bj58.argo.controller.AbstractController;
 
 public class ConsoleController extends AbstractController {
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public void init() {
