@@ -60,11 +60,11 @@ a:active,a:hover {
 #leftColumn {
 	margin-top: 10px;
 	margin-left: 20px;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 	padding: 0px;
 	float: left;
 	width: 120px;
-	height: 400px;
+	height: 80%;
 }
 
 #rightColumn {
@@ -72,6 +72,7 @@ a:active,a:hover {
 	padding: 0px;
 	float: left;
 	width: 80%;
+	height:80%;
 }
 
 #bodyColumn {
@@ -178,8 +179,8 @@ a:active,a:hover {
 }
 
 #footer {
-	padding: 10px;
-	margin: 5px 0px 20px 0px;
+	padding: 0px;
+	margin: 0px 0px 5px 0px;
 	border-top: solid #ccc 1px;
 	color: #333333;
 }
@@ -218,13 +219,13 @@ a:active,a:hover {
 	color: #003300;
 }
 
-.fieldset: {
+.fieldset {
 	border: 11px solid #B5B8C8;
 	padding: 10px;
 	margin-bottom: 10px;
 	display: block;
 }
 
-.legendnew {
-	
+.li_title {
+	list-style-type: disc;
 }
