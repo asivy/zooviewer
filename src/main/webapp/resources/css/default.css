@@ -228,4 +228,6 @@ a:active,a:hover {
 
 .li_title {
 	list-style-type: disc;
+	font-size:13px;
+	font-weight: bold;
 }
